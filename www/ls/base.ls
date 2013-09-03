@@ -39,14 +39,14 @@ svg = d3.select \body .append \svg
 mainGroup = svg.append \g
     ..attr \transform "translate(#{width/2}, #{height/2})"
 innerWidth = 1.9 * Math.sqrt radius * radius / 3
-$centerText = $ "<span id='content'>Návrh výdajů státního rozpočtu pro rok 2014</span>"
+$centerText = $ "<span id='content'>Návrh výdajů státního rozpočtu pro rok 2014<small>Najeďte myší nad výseč a&nbsp;prohlédněte si jednotlivé kapitoly</small></span>"
     ..css \top innerWidth / 2 - 130
     ..css \width innerWidth - 100
 $centerValueContainer = $ "<span id='valueContainer'></span>"
-    ..css \top innerWidth / 2 + 20
+    ..css \top innerWidth / 2 + 40
     ..css \width innerWidth
 $centerValue = $ "<span id='value'></span>"
-    ..html "1192"
+    ..html "<span>celkem</span>1192"
     ..appendTo $centerValueContainer
 
 $ "<span id='mld'>miliard Kč</span>"
