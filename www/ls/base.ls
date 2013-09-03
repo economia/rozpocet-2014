@@ -25,7 +25,9 @@ firstNode = null
 width = 650
 height = 650
 radius = 0.5 * Math.min width, height
-color = d3.scale.category20c!
+color = d3.scale.ordinal!
+    ..range <[#A6CEE3 #1F78B4 #B2DF8A #33A02C #FB9A99 #E31A1C #FDBF6F #FF7F00 #CAB2D6]>
+
 svg = d3.select \body .append \svg
     ..attr \width width
     ..attr \height height
@@ -47,6 +49,11 @@ path = mainGroup.datum firstNode .selectAll \path
     .enter!append \path
         ..attr \d arc
         ..style \stroke \#fff
-        ..style \fill -> color it.nazev
+        ..style \fill ->
+            colorParent = if it.parent and it.parent isnt firstNode
+                it.parent.nazev
+            else
+                it.nazev
+            color colorParent
         ..attr \data-tooltip -> it.nazev
         ..style \fill-rule \evenodd
