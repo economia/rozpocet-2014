@@ -1,13 +1,16 @@
 lastKapitola = null
+firstNode = null
 (err, rows) <~ d3.csv "../data/rozpocet-2014.csv"
     .row ->
         node =
             nazev: it.podkapitola
             vydaje: it['výdaje 2014'].replace /,/g '' |> parseInt _, 10
             kapitola: it['číslo kapitoly']
-            parent: if it['číslo kapitoly'] then null else lastKapitola
+            parent: if it['číslo kapitoly'] then firstNode else lastKapitola
         if it['číslo kapitoly']
             lastKapitola := node
+        if not firstNode
+            firstNode := node
         node
     .get
 width = 900
