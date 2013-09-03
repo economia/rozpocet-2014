@@ -26,7 +26,9 @@ width = $ window .width!
 height = $ window .height!
 radius = 0.5 * Math.min width, height
 color = d3.scale.ordinal!
-    ..range <[#A6CEE3 #1F78B4 #B2DF8A #33A02C #FB9A99 #E31A1C #FDBF6F #FF7F00 #CAB2D6]>
+    ..range <[#A6CEE3 #1F78B4 #B2DF8A #33A02C #FB9A99 #E31A1C #FDBF6F #FF7F00 #CAB2D6 #6A3D9A]>
+
+
 
 svg = d3.select \body .append \svg
     ..attr \width width
