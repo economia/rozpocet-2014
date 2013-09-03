@@ -44,7 +44,6 @@ arc = d3.svg.arc!
     ..endAngle -> it.x + it.dx
     ..innerRadius -> Math.sqrt it.y
     ..outerRadius -> Math.sqrt it.y + it.dy
-
 path = mainGroup.datum firstNode .selectAll \path
     .data partition.nodes
     .enter!append \path
