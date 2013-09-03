@@ -1,3 +1,4 @@
+new Tooltip!watchElements!
 lastKapitola = null
 firstNode = null
 (err, rows) <~ d3.csv "../data/rozpocet-2014.csv"
@@ -23,7 +24,29 @@ firstNode = null
     .get
 width = 650
 height = 650
-
+radius = 0.5 * Math.min width, height
+color = d3.scale.category20c!
 svg = d3.select \body .append \svg
     ..attr \width width
     ..attr \height height
+
+mainGroup = svg.append \g
+    ..attr \transform "translate(#{width/2}, #{height/2})"
+partition = d3.layout.partition!
+    ..sort null
+    ..size [2* Math.PI, radius*radius]
+    ..value -> it.vydaje
+arc = d3.svg.arc!
+    ..startAngle -> it.x
+    ..endAngle -> it.x + it.dx
+    ..innerRadius -> Math.sqrt it.y
+    ..outerRadius -> Math.sqrt it.y + it.dy
+
+path = mainGroup.datum firstNode .selectAll \path
+    .data partition.nodes
+    .enter!append \path
+        ..attr \d arc
+        ..style \stroke \#fff
+        ..style \fill -> color it.nazev
+        ..attr \data-tooltip -> it.nazev
+        ..style \fill-rule \evenodd
