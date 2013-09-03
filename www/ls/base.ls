@@ -42,6 +42,7 @@ force = d3.layout.force!
 force
     ..nodes rows
     ..links links
+    ..alpha 0.9
     ..start!
 link = svg.selectAll \.link
     .data links
