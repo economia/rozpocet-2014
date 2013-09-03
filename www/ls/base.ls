@@ -28,14 +28,14 @@ svg = d3.select \body .append \svg
 chargeScale = d3.scale.linear!
     ..domain [0 1192407508965]
     ..range [-50 -300]
-scale = d3.scale.linear!
+scale = d3.scale.sqrt!
     ..domain [0 1192407508965]
-    ..range [0 5000]
+    ..range [0 80]
 force = d3.layout.force!
     ..charge -> chargeScale it.vydaje
     ..linkDistance ->
-        r1 = Math.sqrt scale it.source.vydaje
-        r2 = Math.sqrt scale it.target.vydaje
+        r1 = scale it.source.vydaje
+        r2 = scale it.target.vydaje
         (r1 + r2)
     ..size [width, height]
 
@@ -53,7 +53,7 @@ node = svg.selectAll \.node
     .data rows
     .enter!append \circle
         ..attr \class \node
-        ..attr \r -> Math.sqrt scale it.vydaje
+        ..attr \r -> scale it.vydaje
         ..style \fill \red
         ..call force.drag
 
