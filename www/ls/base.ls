@@ -50,6 +50,7 @@ path = mainGroup.datum firstNode .selectAll \path
         ..attr \d arc
         ..style \stroke \#fff
         ..style \fill ->
+            return \white if not it.parent
             colorParent = if it.parent and it.parent isnt firstNode
                 it.parent.nazev
             else
