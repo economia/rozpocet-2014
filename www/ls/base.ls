@@ -1,3 +1,5 @@
+return if not Modernizr.svg
+$ '.fallback' .remove!
 new Tooltip!watchElements!
 lastKapitola = null
 firstNode = null
@@ -41,7 +43,7 @@ svg = d3.select \body .append \svg
 mainGroup = svg.append \g
     ..attr \transform "translate(#{width/2}, #{height/2})"
 innerWidth = 1.9 * Math.sqrt radius * radius / 3
-$centerText = $ "<span id='content'>Návrh výdajů státního rozpočtu pro rok 2014<small>Najeďte myší nad výseč a&nbsp;prohlédněte si jednotlivé kapitoly</small></span>"
+$centerText = $ "<span id='content'>Návrh výdajů státního rozpočtu pro rok 2014</span>"
     ..css \top innerWidth / 2 - 130
     ..css \width innerWidth - 100
 $centerValueContainer = $ "<span id='valueContainer'></span>"
