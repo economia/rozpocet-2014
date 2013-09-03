@@ -9,3 +9,30 @@ lastKapitola = null
             kapitola: it['číslo kapitoly']
             parent: if lastKapitola isnt it['číslo kapitoly'] then lastKapitola else null
     .get
+width = 900
+height = 900
+svg = d3.select \body .append \svg
+    ..attr \width width
+    ..attr \height height
+force = d3.layout.force!
+    ..charge -120
+    ..linkDistance 30
+    ..size [width, height]
+
+force
+    ..nodes rows
+    ..start!
+
+node = svg.selectAll \.node
+    .data rows
+    .enter!append \circle
+        ..attr \class \node
+        ..attr \r 5
+        ..style \fill \red
+        ..call force.drag
+
+
+force.on \tick ->
+    node
+        ..attr \cx (.x)
+        ..attr \cy (.y)
