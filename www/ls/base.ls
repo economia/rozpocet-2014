@@ -27,7 +27,7 @@ svg = d3.select \body .append \svg
     ..attr \height height
 chargeScale = d3.scale.linear!
     ..domain [0 1192407508965]
-    ..range [-50 -300]
+    ..range [-50 -4000]
 scale = d3.scale.sqrt!
     ..domain [0 1192407508965]
     ..range [0 80]
