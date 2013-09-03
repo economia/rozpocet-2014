@@ -37,7 +37,6 @@ svg = d3.select \body .append \svg
 mainGroup = svg.append \g
     ..attr \transform "translate(#{width/2}, #{height/2})"
 partition = d3.layout.partition!
-    ..sort null
     ..size [2* Math.PI, radius*radius]
     ..value -> it.vydaje
 arc = d3.svg.arc!
