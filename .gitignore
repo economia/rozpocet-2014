@@ -3,3 +3,4 @@
 /srv/config.ls
 /*.sublime-workspace
 /www/css/screen.css
+/www/js/*.js
