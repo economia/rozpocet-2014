@@ -13,8 +13,8 @@ firstNode = null
             firstNode := node
         node
     .get
-width = 900
-height = 700
+width = 1900
+height = 1050
 links = []
 rows.forEach (row) ->
     if row.parent
@@ -25,18 +25,24 @@ rows.forEach (row) ->
 svg = d3.select \body .append \svg
     ..attr \width width
     ..attr \height height
+chargeScale = d3.scale.linear!
+    ..domain [0 1192407508965]
+    ..range [-50 -300]
+scale = d3.scale.linear!
+    ..domain [0 1192407508965]
+    ..range [0 5000]
 force = d3.layout.force!
-    ..charge -120
-    ..linkDistance 30
+    ..charge -> chargeScale it.vydaje
+    ..linkDistance ->
+        r1 = Math.sqrt scale it.source.vydaje
+        r2 = Math.sqrt scale it.target.vydaje
+        (r1 + r2)
     ..size [width, height]
 
 force
     ..nodes rows
     ..links links
     ..start!
-scale = d3.scale.linear!
-    ..domain [0 1192407508965]
-    ..range [0 50]
 link = svg.selectAll \.link
     .data links
     .enter!append \line
