@@ -1,16 +1,24 @@
 lastKapitola = null
 (err, rows) <~ d3.csv "../data/rozpocet-2014.csv"
     .row ->
-        if it['číslo kapitoly']
-            lastKapitola := that
-        return do
+        node =
             nazev: it.podkapitola
             vydaje: it['výdaje 2014'].replace /,/g '' |> parseInt _, 10
             kapitola: it['číslo kapitoly']
-            parent: if lastKapitola isnt it['číslo kapitoly'] then lastKapitola else null
+            parent: if it['číslo kapitoly'] then null else lastKapitola
+        if it['číslo kapitoly']
+            lastKapitola := node
+        node
     .get
 width = 900
 height = 700
+links = []
+rows.forEach (row) ->
+    if row.parent
+        links.push do
+            source: row
+            target: row.parent
+
 svg = d3.select \body .append \svg
     ..attr \width width
     ..attr \height height
@@ -21,6 +29,7 @@ force = d3.layout.force!
 
 force
     ..nodes rows
+    ..links links
     ..start!
 scale = d3.scale.linear!
     ..domain [0 1192407508965]
