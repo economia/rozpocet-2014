@@ -6,70 +6,24 @@ firstNode = null
             nazev: it.podkapitola.split '(' .0
             vydaje: it['výdaje 2014'].replace /,/g '' |> parseInt _, 10
             kapitola: it['číslo kapitoly']
-            parent: if it['číslo kapitoly'] then firstNode else lastKapitola
+            children: []
+
+        if it['číslo kapitoly'] and firstNode
+            node.parent = firstNode
+            firstNode.children.push node
+        else
+            node.parent = lastKapitola
+            if lastKapitola
+                lastKapitola.children.push node
         if it['číslo kapitoly']
             lastKapitola := node
         if not firstNode
             firstNode := node
         node
     .get
-width = 3000
-height = 3000
-links = []
-rows.forEach (row) ->
-    if row.parent
-        links.push do
-            source: row
-            target: row.parent
+width = 650
+height = 650
 
 svg = d3.select \body .append \svg
     ..attr \width width
     ..attr \height height
-chargeScale = d3.scale.linear!
-    ..domain [0 1192407508965]
-    ..range [-1000 -6000]
-scale = d3.scale.sqrt!
-    ..domain [0 1192407508965]
-    ..range [0 80]
-force = d3.layout.force!
-    ..charge -> chargeScale it.vydaje
-    ..gravity 0.1
-    ..linkDistance ->
-        r1 = scale it.source.vydaje
-        r2 = scale it.target.vydaje
-        (r1 + r2) + 200
-    ..size [width, height]
-
-force
-    ..nodes rows
-    ..links links
-    ..alpha 0
-    ..start!
-link = svg.selectAll \.link
-    .data links
-    .enter!append \line
-        ..attr \class \link
-        ..style \stroke-width \1px
-        ..style \stroke \black
-nodeGroup = svg.selectAll \.nodeGroup
-    .data rows
-    .enter!append \g
-        ..attr \transform "translate(5, 5)"
-        ..call force.drag
-        ..append \circle
-            ..attr \class \node
-            ..attr \r -> scale it.vydaje
-            ..style \fill \red
-        ..append \text
-            ..text (.nazev)
-            ..style \font-size \0.72em
-
-
-force.on \tick ->
-    nodeGroup
-        ..attr \transform ({x, y})-> "translate(#x, #y)"
-    link
-        ..attr \x1 (.source.x)
-        ..attr \y1 (.source.y)
-        ..attr \x2 (.target.x)
-        ..attr \y2 (.target.y)
