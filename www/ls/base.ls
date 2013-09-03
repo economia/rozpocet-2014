@@ -47,7 +47,7 @@ node = svg.selectAll \.node
     .data rows
     .enter!append \circle
         ..attr \class \node
-        ..attr \r -> scale it.vydaje
+        ..attr \r -> Math.sqrt scale it.vydaje
         ..style \fill \red
         ..call force.drag
 
