@@ -22,6 +22,8 @@ firstNode = null
             firstNode := node
         node
     .get
+
+firstNode.children .= sort (a, b) -> a.vydaje - b.vydaje
 width = $ window .width!
 height = $ window .height!
 width = Math.min width, height
