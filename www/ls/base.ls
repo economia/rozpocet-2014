@@ -22,12 +22,14 @@ force = d3.layout.force!
 force
     ..nodes rows
     ..start!
-
+scale = d3.scale.linear!
+    ..domain [0 1192407508965]
+    ..range [0 50]
 node = svg.selectAll \.node
     .data rows
     .enter!append \circle
         ..attr \class \node
-        ..attr \r 5
+        ..attr \r -> scale it.vydaje
         ..style \fill \red
         ..call force.drag
 
