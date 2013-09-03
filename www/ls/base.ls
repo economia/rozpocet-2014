@@ -65,8 +65,8 @@ partition = d3.layout.partition!
     ..size [2* Math.PI, radius*radius]
     ..value -> it.vydaje
 arc = d3.svg.arc!
-    ..startAngle -> it.x
-    ..endAngle -> it.x + it.dx
+    ..startAngle -> (it.x + Math.PI)
+    ..endAngle -> (it.x + it.dx + Math.PI)
     ..innerRadius -> Math.sqrt it.y
     ..outerRadius -> Math.sqrt it.y + it.dy
 path = mainGroup.datum firstNode .selectAll \path
