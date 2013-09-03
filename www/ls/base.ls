@@ -3,7 +3,7 @@ firstNode = null
 (err, rows) <~ d3.csv "../data/rozpocet-2014.csv"
     .row ->
         node =
-            nazev: it.podkapitola
+            nazev: it.podkapitola.split '(' .0
             vydaje: it['výdaje 2014'].replace /,/g '' |> parseInt _, 10
             kapitola: it['číslo kapitoly']
             parent: if it['číslo kapitoly'] then firstNode else lastKapitola
