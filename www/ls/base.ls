@@ -37,6 +37,12 @@ force
 scale = d3.scale.linear!
     ..domain [0 1192407508965]
     ..range [0 50]
+link = svg.selectAll \.link
+    .data links
+    .enter!append \line
+        ..attr \class \link
+        ..style \stroke-width \1px
+        ..style \stroke \black
 node = svg.selectAll \.node
     .data rows
     .enter!append \circle
@@ -50,3 +56,8 @@ force.on \tick ->
     node
         ..attr \cx (.x)
         ..attr \cy (.y)
+    link
+        ..attr \x1 (.source.x)
+        ..attr \y1 (.source.y)
+        ..attr \x2 (.target.x)
+        ..attr \y2 (.target.y)
