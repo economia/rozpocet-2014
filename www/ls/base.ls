@@ -54,11 +54,13 @@ nodeGroup = svg.selectAll \.nodeGroup
     .data rows
     .enter!append \g
         ..attr \transform "translate(5, 5)"
+        ..call force.drag
         ..append \circle
             ..attr \class \node
             ..attr \r -> scale it.vydaje
             ..style \fill \red
-            ..call force.drag
+        ..append \text
+            ..text (.nazev)
 
 
 force.on \tick ->
