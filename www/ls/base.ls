@@ -10,7 +10,7 @@ lastKapitola = null
             parent: if lastKapitola isnt it['číslo kapitoly'] then lastKapitola else null
     .get
 width = 900
-height = 900
+height = 700
 svg = d3.select \body .append \svg
     ..attr \width width
     ..attr \height height
