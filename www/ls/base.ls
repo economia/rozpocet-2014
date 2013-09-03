@@ -24,7 +24,9 @@ firstNode = null
     .get
 width = $ window .width!
 height = $ window .height!
-radius = 0.5 * Math.min width, height
+width = Math.min width, height
+height = Math.min width, height
+radius = 0.5 * height
 color = d3.scale.ordinal!
     ..range <[#A6CEE3 #1F78B4 #B2DF8A #33A02C #FB9A99 #E31A1C #FDBF6F #FF7F00 #CAB2D6 #6A3D9A]>
 
@@ -36,6 +38,18 @@ svg = d3.select \body .append \svg
 
 mainGroup = svg.append \g
     ..attr \transform "translate(#{width/2}, #{height/2})"
+innerWidth = 1.9 * Math.sqrt radius * radius / 3
+$centerText = $ "<span id='content'>Výdaje na programy spolufinancované z rozpočtu Evropské unie a z prostředků finančních mechanismů mimo výzkum, vývoj a inovace</div>"
+    ..css \top innerWidth / 2 - 130
+
+$ "<div id='centerText'></div>"
+    ..css \width innerWidth
+    ..css \height innerWidth
+    ..css \top 0.5 * (height - innerWidth)
+    ..css \left 0.5 * (width - innerWidth)
+    ..append $centerText
+    ..appendTo $ "body"
+
 partition = d3.layout.partition!
     ..size [2* Math.PI, radius*radius]
     ..value -> it.vydaje
@@ -57,4 +71,6 @@ path = mainGroup.datum firstNode .selectAll \path
                 it.nazev
             color colorParent
         ..attr \data-tooltip -> it.nazev
+        ..on \mouseover ->
+            $centerText.text it.nazev
         ..style \fill-rule \evenodd
