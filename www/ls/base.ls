@@ -50,19 +50,20 @@ link = svg.selectAll \.link
         ..attr \class \link
         ..style \stroke-width \1px
         ..style \stroke \black
-node = svg.selectAll \.node
+nodeGroup = svg.selectAll \.nodeGroup
     .data rows
-    .enter!append \circle
-        ..attr \class \node
-        ..attr \r -> scale it.vydaje
-        ..style \fill \red
-        ..call force.drag
+    .enter!append \g
+        ..attr \transform "translate(5, 5)"
+        ..append \circle
+            ..attr \class \node
+            ..attr \r -> scale it.vydaje
+            ..style \fill \red
+            ..call force.drag
 
 
 force.on \tick ->
-    node
-        ..attr \cx (.x)
-        ..attr \cy (.y)
+    nodeGroup
+        ..attr \transform ({x, y})-> "translate(#x, #y)"
     link
         ..attr \x1 (.source.x)
         ..attr \y1 (.source.y)
