@@ -39,8 +39,18 @@ svg = d3.select \body .append \svg
 mainGroup = svg.append \g
     ..attr \transform "translate(#{width/2}, #{height/2})"
 innerWidth = 1.9 * Math.sqrt radius * radius / 3
-$centerText = $ "<span id='content'>Výdaje na programy spolufinancované z rozpočtu Evropské unie a z prostředků finančních mechanismů mimo výzkum, vývoj a inovace</div>"
+$centerText = $ "<span id='content'>Návrh výdajů státního rozpočtu pro rok 2014</span>"
     ..css \top innerWidth / 2 - 130
+    ..css \width innerWidth - 100
+$centerValueContainer = $ "<span id='valueContainer'></span>"
+    ..css \top innerWidth / 2 + 20
+    ..css \width innerWidth
+$centerValue = $ "<span id='value'></span>"
+    ..html "1192"
+    ..appendTo $centerValueContainer
+
+$ "<span id='mld'>miliard Kč</span>"
+    ..appendTo $centerValueContainer
 
 $ "<div id='centerText'></div>"
     ..css \width innerWidth
@@ -48,6 +58,7 @@ $ "<div id='centerText'></div>"
     ..css \top 0.5 * (height - innerWidth)
     ..css \left 0.5 * (width - innerWidth)
     ..append $centerText
+    ..append $centerValueContainer
     ..appendTo $ "body"
 
 partition = d3.layout.partition!
@@ -70,7 +81,23 @@ path = mainGroup.datum firstNode .selectAll \path
             else
                 it.nazev
             color colorParent
-        ..attr \data-tooltip -> it.nazev
         ..on \mouseover ->
             $centerText.text it.nazev
+            $centerValue.text parseValue it.vydaje
         ..style \fill-rule \evenodd
+
+parseValue = ->
+    val = it / 1e9
+    exp = if val < 1
+        1e2
+    else if val < 10
+        1e1
+    else
+        1
+    val *= exp
+    val = Math.round val
+    val /= exp
+    val .= toString!
+    val .= replace '.' ','
+
+
