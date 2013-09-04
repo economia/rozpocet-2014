@@ -56,7 +56,7 @@ $centerValue = $ "<span id='value'></span>"
 $ "<span id='mld'>miliard Kč</span>"
     ..appendTo $centerValueContainer
 
-$ "<div id='centerText'></div>"
+$center = $ "<div id='centerText'></div>"
     ..css \width innerWidth
     ..css \height innerWidth
     ..css \top 0.5 * (height - innerWidth)
@@ -88,6 +88,7 @@ path = mainGroup.datum firstNode .selectAll \path
         ..on \mouseover ->
             $centerText.text it.nazev
             $centerValue.text parseValue it.vydaje
+        ..on \click -> zoomTo it
         ..style \fill-rule \evenodd
 
 parseValue = ->
@@ -105,3 +106,24 @@ parseValue = ->
     val .= replace '.' ','
 
 
+zoomTo = (arc) ->
+    $center.addClass \disabled
+    zoomLevel = Math.max do
+        Math.PI / arc.dx / 2
+        1
+    zoomLevel = Math.min zoomLevel, 10
+    angle = arc.x + 0.5 * arc.dx + Math.PI
+    radius = if arc.parent is firstNode
+        Math.sqrt arc.y + 0.8 * arc.dy
+    else
+        Math.sqrt arc.y
+    ringCenterX = width / 2
+    ringCenterY = height / 2
+    arcCenterDX = radius * Math.sin angle
+    arcCenterDY = (-1) * radius * Math.cos angle
+    translationX = ringCenterX - arcCenterDX * zoomLevel
+    translationY = ringCenterY - arcCenterDY * zoomLevel
+    mainGroup
+        ..transition!
+            ..duration 800
+            ..attr \transform "translate(#translationX, #translationY) scale(#zoomLevel)"
