@@ -98,7 +98,11 @@ path = mainGroup.datum firstNode .selectAll \path
             else
                 it.nazev
             color colorParent
-        ..attr \data-tooltip -> escape "#{it.nazev}: <strong>#{parseValue it.vydaje}</strong> miliard Kč"
+        ..attr \data-tooltip ->
+            if it isnt firstNode
+                escape "#{it.nazev}: <strong>#{parseValue it.vydaje}</strong> miliard Kč"
+            else
+                ""
         ..on \mouseover ->
             $centerText.text it.nazev
             $centerValue.text parseValue it.vydaje
@@ -107,8 +111,10 @@ path = mainGroup.datum firstNode .selectAll \path
 
 
 
-
+zoomedNode = null
 zoomTo = (arc) ->
+    return killZoom! if arc in [firstNode, zoomedNode]
+    zoomedNode := arc
     $body.addClass \zoomed
     setTimeout do
         -> $center.addClass \disabled
@@ -132,3 +138,12 @@ zoomTo = (arc) ->
         ..transition!
             ..duration 800
             ..attr \transform "translate(#translationX, #translationY) scale(#zoomLevel)"
+
+killZoom = ->
+    mainGroup
+        ..transition!
+            ..duration 800
+            ..attr \transform "translate(#{width/2}, #{height/2})"
+    $center.removeClass \disabled
+    <~ setTimeout _, 700
+    $body.removeClass \zoomed
