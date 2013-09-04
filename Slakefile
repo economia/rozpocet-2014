@@ -31,19 +31,20 @@ combine-scripts = (options = {}) ->
     (err, files) <~ fs.readdir "#__dirname/www/js"
     files .= filter -> it isnt 'script.js' and it isnt 'script.js.map'
     files .= map -> "./www/js/#it"
-    minifyOptions =
-        outSourceMap: "../js/script.js.map"
-        sourceRoot: "../../"
+    minifyOptions = {}
     if not options.compression
         minifyOptions
-            ..compress = no
-            ..mangle   = no
+            ..compress     = no
+            ..mangle       = no
+            ..outSourceMap = "../js/script.js.map"
+            ..sourceRoot   = "../../"
     result = uglify.minify files, minifyOptions
 
     {map, code} = result
-    code += "\n//@ sourceMappingURL=./js/script.js.map"
+    if not options.compression
+        code += "\n//@ sourceMappingURL=./js/script.js.map"
+        fs.writeFile "#__dirname/www/js/script.js.map", map
     fs.writeFile "#__dirname/www/script.js", code
-    fs.writeFile "#__dirname/www/js/script.js.map", map
 
 run-script = (file) ->
     require! child_process.exec
