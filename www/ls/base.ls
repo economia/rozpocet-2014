@@ -73,24 +73,6 @@ arc = d3.svg.arc!
     ..endAngle -> (it.x + it.dx + Math.PI)
     ..innerRadius -> Math.sqrt it.y
     ..outerRadius -> Math.sqrt it.y + it.dy
-path = mainGroup.datum firstNode .selectAll \path
-    .data partition.nodes
-    .enter!append \path
-        ..attr \d arc
-        ..style \stroke \#fff
-        ..style \fill ->
-            return \white if not it.parent
-            colorParent = if it.parent and it.parent isnt firstNode
-                it.parent.nazev
-            else
-                it.nazev
-            color colorParent
-        ..on \mouseover ->
-            $centerText.text it.nazev
-            $centerValue.text parseValue it.vydaje
-        ..on \click -> zoomTo it
-        ..style \fill-rule \evenodd
-
 parseValue = ->
     val = it / 1e9
     exp = if val < 1
@@ -104,6 +86,26 @@ parseValue = ->
     val /= exp
     val .= toString!
     val .= replace '.' ','
+path = mainGroup.datum firstNode .selectAll \path
+    .data partition.nodes
+    .enter!append \path
+        ..attr \d arc
+        ..style \stroke \#fff
+        ..style \fill ->
+            return \white if not it.parent
+            colorParent = if it.parent and it.parent isnt firstNode
+                it.parent.nazev
+            else
+                it.nazev
+            color colorParent
+        ..attr \data-tooltip -> escape "#{it.nazev}: <strong>#{parseValue it.vydaje}</strong> miliard Kč"
+        ..on \mouseover ->
+            $centerText.text it.nazev
+            $centerValue.text parseValue it.vydaje
+        ..on \click -> zoomTo it
+        ..style \fill-rule \evenodd
+
+
 
 
 zoomTo = (arc) ->
