@@ -140,6 +140,7 @@ zoomTo = (arc) ->
             ..attr \transform "translate(#translationX, #translationY) scale(#zoomLevel)"
 
 killZoom = ->
+    zoomedNode := null
     mainGroup
         ..transition!
             ..duration 800
