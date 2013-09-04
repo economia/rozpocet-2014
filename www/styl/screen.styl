@@ -8,6 +8,8 @@ body
         &:hover
             opacity 0.7
     #centerText
+        opacity 1
+        transition opacity 0.2s
         &.disabled
             display none
         position absolute
@@ -44,3 +46,6 @@ body
             #mld
                 display block
 
+    &.zoomed
+        #centerText
+            opacity 0

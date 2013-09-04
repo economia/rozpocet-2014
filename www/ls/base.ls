@@ -52,7 +52,7 @@ $centerValueContainer = $ "<span id='valueContainer'></span>"
 $centerValue = $ "<span id='value'></span>"
     ..html "<span>celkem</span>1192"
     ..appendTo $centerValueContainer
-
+$body = $ "body"
 $ "<span id='mld'>miliard Kč</span>"
     ..appendTo $centerValueContainer
 
@@ -63,7 +63,7 @@ $center = $ "<div id='centerText'></div>"
     ..css \left 0.5 * (width - innerWidth)
     ..append $centerText
     ..append $centerValueContainer
-    ..appendTo $ "body"
+    ..appendTo $body
 
 partition = d3.layout.partition!
     ..size [2* Math.PI, radius*radius]
@@ -107,7 +107,10 @@ parseValue = ->
 
 
 zoomTo = (arc) ->
-    $center.addClass \disabled
+    $body.addClass \zoomed
+    setTimeout do
+        -> $center.addClass \disabled
+        800
     zoomLevel = Math.max do
         Math.PI / arc.dx / 2
         1
