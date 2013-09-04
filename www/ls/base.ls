@@ -114,6 +114,7 @@ path = mainGroup.datum firstNode .selectAll \path
 zoomedNode = null
 zoomTo = (arc) ->
     return killZoom! if arc in [firstNode, zoomedNode]
+    backButton.classed \disabled no
     zoomedNode := arc
     $body.addClass \zoomed
     setTimeout do
@@ -140,6 +141,7 @@ zoomTo = (arc) ->
             ..attr \transform "translate(#translationX, #translationY) scale(#zoomLevel)"
 
 killZoom = ->
+    backButton.classed \disabled yes
     zoomedNode := null
     mainGroup
         ..transition!
@@ -148,3 +150,7 @@ killZoom = ->
     $center.removeClass \disabled
     <~ setTimeout _, 700
     $body.removeClass \zoomed
+
+backButton = d3.select \body .append \a
+    ..attr \class 'backButton disabled'
+    ..on \click killZoom
